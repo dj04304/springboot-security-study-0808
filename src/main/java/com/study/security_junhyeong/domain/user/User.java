@@ -29,10 +29,10 @@ public class User {
 	
 	public List<String> getUserRoles() {
 		
-		if(user_roles == null) {
+		if(user_roles == null || user_roles.isBlank()) { //isBlank() -> 비어있다.
 			return new ArrayList<String>();
 		}
-		return Arrays.asList(user_roles.split(",")); //쉼표단위로 끊어서 배열을 만들어준다. 그 배열을 list로 만들겠다.
+		return Arrays.asList(user_roles.replaceAll(" ", "").split(",")); //쉼표단위로 끊어서 배열을 만들어준다. 그 배열을 list로 만들겠다. // replaceAll -> 공백 제거
 		
 	}
 }
