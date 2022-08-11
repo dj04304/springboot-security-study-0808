@@ -21,7 +21,7 @@
   			
   		</insert>
   		
-  		<select id="fintUserByUsername" parameterType="String" resultType="com.study.security_junhyeong.domain.user.User">
+  		<select id="findUserByUsername" parameterType="String" resultType="com.study.security_junhyeong.domain.user.User">
   			select
   				um.user_code,
   				

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/grant/test")
-public class GrantTestController {
+public class GrantTestRestController {
 
 		@GetMapping("/user")
 		public ResponseEntity<?> getUserData() {
