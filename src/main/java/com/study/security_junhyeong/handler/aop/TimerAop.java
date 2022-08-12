@@ -18,7 +18,8 @@ public class TimerAop {
 	//log를 찍는 역할
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass()); //getClass 우리 클래스를 가져와라 == TimerAopl.class == this.getClass()
 	
-	//젤 앞의 * -> 접근지정자
+	//execution은 메소드를 찾아가는 것
+	//젤 앞의 * -> 접근지정자, returnType
 	//컨트롤러 패키지 뒤의 .. -> 컨트롤러 이후에 오는 모든 클래스
 	//*RestController 뒤에 RestContoller클래스 이름이 포함된 모든 클래스를 말한다.
 	@Pointcut("execution(* com.study.security_junhyeong.web.controller..*.*(..))") //패키지명, 모든 클래스, 모든 메소드, 등등 

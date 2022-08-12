@@ -20,7 +20,7 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-	public boolean signup() {
+	public boolean signup() throws Exception{
 		return false;
 	}
 	

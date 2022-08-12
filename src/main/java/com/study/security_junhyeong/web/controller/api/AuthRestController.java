@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.study.security_junhyeong.handler.aop.annotation.Log;
 import com.study.security_junhyeong.handler.aop.annotation.Timer;
+import com.study.security_junhyeong.handler.aop.annotation.ValidCheck;
 import com.study.security_junhyeong.handler.exception.CustomValidationApiException;
 import com.study.security_junhyeong.service.auth.AuthService;
 import com.study.security_junhyeong.service.auth.PrincipalDetailsService;
@@ -36,19 +37,10 @@ public class AuthRestController {
 	//@Valid 를 쓸때는 BindingResult 는 항상 뒤에 따라와줘야 한다.
 	@Timer
 	@Log
+	@ValidCheck
 	@GetMapping("/signup/validation/username")
 	public ResponseEntity<?> checkUsername(@Valid UsernameCheckReqDto usernameCheckReqDto, BindingResult bindingResult) { 
-		
-		
-		if(bindingResult.hasErrors()) {
-			Map<String, String>  errorMessage = new HashMap<String, String>();
-			bindingResult.getFieldErrors().forEach(error -> {
-				errorMessage.put(error.getField(), error.getDefaultMessage());
-			});
-			
-			throw new CustomValidationApiException("유효성 검사실패", errorMessage); //badRequest 400 에러 (클라이언트 잘못)
-		}
-		
+	
 		//위 if절에 걸리지 않으면 
 		boolean status = false;
 		try {
@@ -60,20 +52,12 @@ public class AuthRestController {
 		
 		return ResponseEntity.ok(new CMRespDto<>(1, "회원가입 가능여부", status));
 	}
-
+	
+	@Log
+	@ValidCheck
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody @Valid SignupReqDto signupReqDto, BindingResult bindingResult) {
 		boolean status = false;
-		
-		if(bindingResult.hasErrors()) {
-			Map<String, String>  errorMessage = new HashMap<String, String>();
-			bindingResult.getFieldErrors().forEach(error -> {
-				errorMessage.put(error.getField(), error.getDefaultMessage());
-			});
-			
-			throw new CustomValidationApiException("유효성 검사실패", errorMessage); //badRequest 400 에러 (클라이언트 잘못)
-		
-		}
 		
 		try {
 			status = principalDetailsService.addUser(signupReqDto);

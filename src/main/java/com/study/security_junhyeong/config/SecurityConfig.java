@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //SecurityCon
 				.failureHandler(new AuthFailureHandler()) //직접 커스텀한 handler 를 넣어준다.
 				.defaultSuccessUrl("/"); //처음 로그인 페이지로 들어가서 로그인을 했을 때, 보내주는 경로, 단 예를들어 mypage로 들어가서 로그인을 할 경우, mypage로 보내준다.
 														//즉 처음 시작한 페이지가 로그인 이외의 페이지라면, 그 곳으로 보내주지만, login 페이지부터 시작할 경우 defaultSuccessUrl에서 정해준 경로로 보내준다.
+				
 	}
 	
 }

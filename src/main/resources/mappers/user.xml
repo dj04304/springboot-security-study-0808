@@ -25,10 +25,10 @@
   			select
   				um.user_code,
   				
-  				um.user_name,
-  				um.user_email,
   				um.user_id,
   				um.user_password,
+  				um.user_name,
+  				um.user_email,
   				um.user_roles,
   				um.user_provider,
   				

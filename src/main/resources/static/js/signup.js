@@ -19,6 +19,8 @@ inputs[2].onblur = () => {
 		data: {username: inputs[2].value},
 		datatype: "json",
 		success: (response) => {
+			checkUsernameFlag = response.data;
+			
 			if(response.data) {
 				alert("사용 가능한 아이디입니다.");
 			}else {
@@ -46,7 +48,7 @@ signupButton.onclick = () => {
 		email: inputs[1].value,
 		username: inputs[2].value,
 		password: inputs[3].value,
-		"usernameCheckFlag": checkUsernameFlag 
+		"checkUsernameFlag": checkUsernameFlag 
 	}
 	
 	$.ajax({
