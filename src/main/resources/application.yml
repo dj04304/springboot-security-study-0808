@@ -20,13 +20,13 @@ spring:
         registration:
           google:
             client-id: 968098453412-3cn9f0b0a9edmebk38k3ni9i6tllco38.apps.googleusercontent.com
-            client-secret: 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
+            client-secret: 
             scope:
             - email
             - profile 
           naver:
             client-id: r6E8D4FEkfCroRdKjlL2
-            client-secret: XZ0Km2aOpn
+            client-secret: 
             scope:
             - email
             - name
