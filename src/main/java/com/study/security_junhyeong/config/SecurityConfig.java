@@ -8,11 +8,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.study.security_junhyeong.config.auth.AuthFailureHandler;
+import com.study.security_junhyeong.service.auth.PrincipalOauth2UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity // 기존의 WebSecurityConfigurerAdapter를 비활성화 시키고, 현재 Security 설정을 따르겠다.
 @Configuration // IoC에 등록
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter { //SecurityConfig 는 스프링 부트 서버의 설정이다.
 	
+	private final PrincipalOauth2UserService principalOauth2UserService;
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() { //BCryptPasswordEncoder 는 암호화이다.
@@ -45,9 +50,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //SecurityCon
 				.loginPage("/auth/signin") // 로그인 페이지는 해당 get요청을 통해 접근한다.
 				.loginProcessingUrl("/auth/signin") // 로그인 요청(post요청)
 				.failureHandler(new AuthFailureHandler()) //직접 커스텀한 handler 를 넣어준다.
-				.defaultSuccessUrl("/"); //처음 로그인 페이지로 들어가서 로그인을 했을 때, 보내주는 경로, 단 예를들어 mypage로 들어가서 로그인을 할 경우, mypage로 보내준다.
-														//즉 처음 시작한 페이지가 로그인 이외의 페이지라면, 그 곳으로 보내주지만, login 페이지부터 시작할 경우 defaultSuccessUrl에서 정해준 경로로 보내준다.
+				.and()
 				
+				.oauth2Login()
+				.userInfoEndpoint()
+				.userService(principalOauth2UserService)
+				
+				.and()
+				
+				.defaultSuccessUrl("/index"); //처음 로그인 페이지로 들어가서 로그인을 했을 때, 보내주는 경로, 단 예를들어 mypage로 들어가서 로그인을 할 경우, mypage로 보내준다.
+				//즉 처음 시작한 페이지가 로그인 이외의 페이지라면, 그 곳으로 보내주지만, login 페이지부터 시작할 경우 defaultSuccessUrl에서 정해준 경로로 보내준다.
+
 	}
 	
 }
