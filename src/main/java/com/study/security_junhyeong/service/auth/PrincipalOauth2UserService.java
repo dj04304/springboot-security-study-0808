@@ -23,14 +23,27 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 	
 	private final UserRepository userRepository;
 	
+	/*
+	 * 목표: OAuth2User의 정보를 우리 서버 database에 등록
+	 */
+	
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		String provider = null;
 		
+		/*
+		 * super.loadUser(userRequest)
+		 * 엔드포인트 결과 즉, OAuth2User 정보를 가진 객체를 리턴한다.
+		 */
 		OAuth2User oAuth2User = super.loadUser(userRequest);
 		
-		
+		/*
+		 * Provider 정보 (클라이언트 아이디, 클라이언트 시크릿, 클라이언트 네임) -> ClientRegistration 가 가지고 있음
+		 */
 		ClientRegistration clientRegistration = userRequest.getClientRegistration(); //provider를 가져옴 (log 로 찍었을 때 젤 마지막에 있는 clientName이 필요함)
+		/*
+		 *  실제 프로필 정보(Map)
+		 */
 		Map<String, Object> attributes = oAuth2User.getAttributes(); //map 리턴으로 user attributes를 가져온다.
 		log.error(">>>>> ClientRegistration: {}", clientRegistration);
 		log.error(">>>>> oAuth2User: {}", attributes);
@@ -43,9 +56,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 	}
 	
 	private User getOAuth2User(String provider, Map<String, Object> attributes) throws OAuth2AuthenticationException{
-			User user = null;
 			String oauth2_id = null;
 			String id = null;
+			
+			User user = null;
+			
 			Map<String, Object> response = null;
 		
 			if(provider.equalsIgnoreCase("google")) {
@@ -68,6 +83,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 				throw new OAuth2AuthenticationException("DATABASE Error!");
 			}
 			
+			/*
+			 * user 가 null일 경우, user 생성
+			 */
 			if(user == null) {
 				user = User.builder()
 								.user_name((String)response.get("name"))

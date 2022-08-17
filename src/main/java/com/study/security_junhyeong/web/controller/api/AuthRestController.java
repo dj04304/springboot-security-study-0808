@@ -1,24 +1,21 @@
 package com.study.security_junhyeong.web.controller.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.study.security_junhyeong.handler.aop.annotation.Log;
 import com.study.security_junhyeong.handler.aop.annotation.Timer;
 import com.study.security_junhyeong.handler.aop.annotation.ValidCheck;
-import com.study.security_junhyeong.handler.exception.CustomValidationApiException;
 import com.study.security_junhyeong.service.auth.AuthService;
+import com.study.security_junhyeong.service.auth.PrincipalDetails;
 import com.study.security_junhyeong.service.auth.PrincipalDetailsService;
 import com.study.security_junhyeong.web.dto.CMRespDto;
 import com.study.security_junhyeong.web.dto.auth.SignupReqDto;
@@ -68,6 +65,15 @@ public class AuthRestController {
 		}
 		
 		return ResponseEntity.ok(new CMRespDto<>(1, "회원가입 성공", status));
+	}
+	
+	@GetMapping("/principal")
+	public ResponseEntity<?> getPrincipal(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		if(principalDetails == null) {
+			return ResponseEntity.badRequest().body(new CMRespDto<>(-1, "principal is null", null));
+		}
+		
+		return ResponseEntity.ok(new CMRespDto<>(1, "success load", principalDetails.getUser()));
 	}
 	
 }

@@ -1,13 +1,20 @@
 package com.study.security_junhyeong.web.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.study.security_junhyeong.service.auth.PrincipalDetails;
 
 @Controller
 public class PageController {
 
 		@GetMapping({"/", "/index"})
-		public String loadIndex() {
+		public String loadIndex(Model model, @AuthenticationPrincipal  PrincipalDetails principalDetails) { //세션영역에서 principalDetails를 꺼내쓴다.
+			
+			model.addAttribute("principal", principalDetails); //유저 정보를 화면에 띄워줌
+			
 			return "index";
 		}
 		

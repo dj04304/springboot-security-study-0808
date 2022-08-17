@@ -52,12 +52,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //SecurityCon
 				.failureHandler(new AuthFailureHandler()) //직접 커스텀한 handler 를 넣어준다.
 				.and()
 				
-				.oauth2Login()
+				.oauth2Login() //oauth2로그인 사용 및 이후 나오는 하위항목
 				.userInfoEndpoint()
-				.userService(principalOauth2UserService)
+				/*
+				 * 1. google, naver, kakao 로그인 요청 -> 코드를 발급해줌.
+				 * 2. 발급받은 코드를 가진 상태로 권한요청(토큰 발급요청)을 함.
+				 * 3. 스코프에 등록된 프로필 정보를 가져올 수 있게 된다.
+				 * 4. 해당 정보를 시큐리티의 객체로 전달받음.
+				 */
+				.userService(principalOauth2UserService) //전달받은 객체를 principalOauth2UserService에 던져주면, loadUser가 실행된다.
 				
 				.and()
-				
+				.failureHandler(null) //로그인 실패
 				.defaultSuccessUrl("/index"); //처음 로그인 페이지로 들어가서 로그인을 했을 때, 보내주는 경로, 단 예를들어 mypage로 들어가서 로그인을 할 경우, mypage로 보내준다.
 				//즉 처음 시작한 페이지가 로그인 이외의 페이지라면, 그 곳으로 보내주지만, login 페이지부터 시작할 경우 defaultSuccessUrl에서 정해준 경로로 보내준다.
 
