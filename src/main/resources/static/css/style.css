@@ -12,4 +12,9 @@
 
 html, body {
     height: 100%;
+    background-color: #fafafa;
+}
+
+button {
+    cursor: pointer;
 }
