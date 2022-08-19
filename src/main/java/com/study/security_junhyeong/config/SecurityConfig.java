@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.web.filter.CorsFilter;
 
 import com.study.security_junhyeong.config.auth.AuthFailureHandler;
 import com.study.security_junhyeong.service.auth.PrincipalOauth2UserService;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter { //SecurityConfig 는 스프링 부트 서버의 설정이다.
 	
+	private final CorsFilter corsFilter;
 	private final PrincipalOauth2UserService principalOauth2UserService;
 	
 	@Bean
@@ -28,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //SecurityCon
 	@Override // super.configure(http); ->  기존 security 방법 //http 는 builder형식임
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable(); // csrf 를 사용하는 것을 권장하지만, 지금은 사용하면 문제가 생긴다. input 마다 다 지급을 해줘야 하기 때문에
+		http.headers().frameOptions().disable().addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM"+ "/**"));
+		http.addFilter(corsFilter); //cors 인증을 하지 않겠다는 의미
 		http.authorizeRequests() // 요청이 들어왔을때의 인증 세팅
 				.antMatchers("/api/v1/grant/test/user/**")
 				.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
