@@ -4,22 +4,24 @@
 <meta charset="UTF-8">
 <title>Index</title>
 
-<style type="text/css">
-	table {
-		border: 1px solid #141414;
-		border-collapse: collapse;
-	}	
+	<style type="text/css">
+		table {
+			border: 1px solid #141414;
+			border-collapse: collapse;
+		}	
+		
+		th, td {
+			border: 1px solid #141414;
+			padding: 10px;
+			text-align: center;
+		}
 	
-	th, td {
-		border: 1px solid #141414;
-		padding: 10px;
-		text-align: center;
-	}
-
-</style>
-
+	</style>
+	<th:block th:replace="/fragments/head"></th:block>
+	
 </head>
 <body>
+	<th:block th:replace="/fragments/header"></th:block>
 	<h1>메인페이지</h1>
 	<table>
 		<tr>

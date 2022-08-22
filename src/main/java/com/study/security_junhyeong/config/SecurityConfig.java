@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.filter.CorsFilter;
 
 import com.study.security_junhyeong.config.auth.AuthFailureHandler;
@@ -31,14 +30,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //SecurityCon
 	@Override // super.configure(http); ->  기존 security 방법 //http 는 builder형식임
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable(); // csrf 를 사용하는 것을 권장하지만, 지금은 사용하면 문제가 생긴다. input 마다 다 지급을 해줘야 하기 때문에
-		http.headers().frameOptions().disable().addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM"+ "/**"));
-		http.addFilter(corsFilter); //cors 인증을 하지 않겠다는 의미
+		http.headers()
+				.frameOptions()
+				.disable();
+		
+//		http.addFilter(corsFilter); //cors 인증을 하지 않겠다는 의미
 		http.authorizeRequests() // 요청이 들어왔을때의 인증 세팅
 				.antMatchers("/api/v1/grant/test/user/**")
 				.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
 				
 				.antMatchers("/api/v1/grant/test/manager/**")
 				.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+				
+				
+				.antMatchers("/notice/addition", "notice/modification/**")
+				//.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')") //admin 또는 manager일때만 공지사항을 등록,수정할 수 있다.
+				.hasRole("ADMIN") //ADMIN에게 권한을 준다.
 				
 				.antMatchers("/api/v1/grant/test/admin/**")
 				.access("hasRole('ROLE_ADMIN')")
