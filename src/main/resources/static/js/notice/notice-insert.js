@@ -37,7 +37,8 @@ submitButton.onclick = () => {
 	 	data: formData,
 	 	dataType: "json",
 	 	success: (response) => {
-			
+			alert(response.data + "번 공지사항 작성 완료");
+			location.href = "/notice/detail/" + response.data;
 		},
 		error: (error) => {
 			console.log(error);
