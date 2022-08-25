@@ -16,6 +16,7 @@ function load(uri) {
 		dataType: "json",
 		success: (response) => {
 			getNotice(response.data);
+			//console.log(response.data)
 		},
 		error: (error) => {
 			console.log(error);
@@ -44,7 +45,11 @@ function getNotice(notice) {
 	let noticeFileArray = new Array();
 	
 	notice.downloadFiles.forEach(file => {
-		noticeFileArray.push(`<a href = "/api/v1/notice/file/${file.fileCode}">${file.fileName}</a>`); 
+		if(file.fileCode != undefined){
+			noticeFileArray.push(`<a href = "/api/v1/notice/file/download/${file.fileTempName}">${file.fileOriginName}</a>`); 
+		} else {
+			noticeFileArray.push(`<p style="margin: 0px">파일 없음</p>`)
+		}
 	});
 	
 	noticeFile.innerHTML += noticeFileArray.join(" / ");
